@@ -1,0 +1,44 @@
+.page-container {
+display: flex;
+position: fixed;
+height: 100%;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+margin: auto;
+width: 100%;
+}
+
+.view-student{
+margin-right: 25px;
+
+}
+
+.register-container{
+  width: 50%;
+  margin: auto;
+}
+
+.register-container header{
+  margin-bottom: 50px;
+  margin-top: 50px;
+  text-align: center;
+}
+.reg-btn{
+  display: flex;
+  justify-content: space-between;
+}
+.reg-btn button:first-child{
+  margin-right: 10px;
+}
+
+.list-container{
+  width: 80%;
+  margin: auto;
+}
+
+.list-container header{
+  text-align: center;
+    padding: 20px 0;
+}
+
