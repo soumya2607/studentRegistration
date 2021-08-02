@@ -63,6 +63,7 @@ export default () => {
             id="firstName"
             placeholder="Enter First Name"
             required
+            pattern="[A-z][a-z]"
           />
           <div className="invalid-feedback">Please enter First Name.</div>
         </div>
@@ -77,6 +78,7 @@ export default () => {
             name="lastName"
             placeholder="Enter Last Name"
             required
+            pattern="[A-z][a-z]"
           />
           <div className="invalid-feedback">Please enter Last Name.</div>
         </div>
