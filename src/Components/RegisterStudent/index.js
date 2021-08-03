@@ -5,27 +5,40 @@ import { StudentContext } from "../../App";
 // eslint-disable-next-line
 export default () => {
   const [valid, setValid] = useState(true);
+  const [validDob, setValidDob] = useState(true);
   const [showSuccess, setSuccess] = useState(false);
   const data = useContext(StudentContext);
   const history = useHistory();
+  const calcluateAge = (stDate) => {
+    var date = new Date(stDate), //Year, month-1 , day.
+      today = new Date(),
+      one_year = 1000 * 60 * 60 * 24 * 365;
+    return Math.floor((today.getTime() - date.getTime()) / one_year);
+  };
   const handleSubmit = (event) => {
     const formData = new FormData(event.target);
     let formValues = {};
+
     if (event.target.checkValidity()) {
       setValid(true);
+
       for (let [key, value] of formData.entries()) {
         formValues[key] = value;
       }
-      data.push(formValues);
-      localStorage.setItem("studentData", JSON.stringify(data));
-      setSuccess(true);
-      history.goBack();
+
+      if (validDob) {
+        data.push(formValues);
+        localStorage.setItem("studentData", JSON.stringify(data));
+        setSuccess(true);
+        history.goBack();
+      }
     } else {
       setSuccess(false);
       setValid(false);
     }
     event.preventDefault();
   };
+
   return (
     <div className="register-container">
       <header>
@@ -63,7 +76,7 @@ export default () => {
             id="firstName"
             placeholder="Enter First Name"
             required
-            pattern="[A-z][a-z]"
+            pattern="[a-zA-Z]*"
           />
           <div className="invalid-feedback">Please enter First Name.</div>
         </div>
@@ -78,7 +91,7 @@ export default () => {
             name="lastName"
             placeholder="Enter Last Name"
             required
-            pattern="[A-z][a-z]"
+            pattern="[a-zA-Z]*"
           />
           <div className="invalid-feedback">Please enter Last Name.</div>
         </div>
@@ -89,14 +102,26 @@ export default () => {
           </label>
           <input
             type="date"
-            className="form-control"
+            className={`form-control ${!validDob ? "is-invalid" : ""}`}
             name="dob"
             id="dob"
             placeholder="MM/DD/YYYY"
             format="mm/dd/yyyy"
+            max={new Date().toISOString().split("T")[0]}
             required
+            onChange={(event) => {
+              if (calcluateAge(event.target.value) < 5) {
+                event.target.setCustomValidity("Invalid");
+                setValidDob(false);
+              } else {
+                event.target.setCustomValidity("");
+                setValidDob(true);
+              }
+            }}
           />
-          <div className="invalid-feedback">Please Enter DOB</div>
+          <div className="invalid-feedback">
+            {!validDob ? "Age must be above 5 years" : "Please Enter DOB"}
+          </div>
         </div>
         <div className="col-12">
           <label htmlFor="mobile" className="form-label">
